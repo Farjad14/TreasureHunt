@@ -1,4 +1,4 @@
-package redbeard;
+package org.csc301;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -24,23 +24,25 @@ public class Node implements HeapItem {
 		return hCost;
 	}
 
-	@Override
+	//@Override
 	public int compareTo(HeapItem other) {
+		return gCost;
 		// Your implementation goes here. Similar to Lab4.
 	}
 
-	@Override
+	//@Override
 	public void setHeapIndex(int index) {
 		heapIndex = index;
 	}
 
-	@Override
+	//@Override
 	public int getHeapIndex() {
 		return heapIndex;
 	}
 
 	@Override
 	public boolean equals(Object other) {
+		return inPath;
 		// Your implementation goes here. Two nodes are equal if they occupy same position in the map.
 	}
 }

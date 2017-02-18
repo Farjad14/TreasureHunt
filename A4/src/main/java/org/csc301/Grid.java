@@ -97,6 +97,7 @@ public class Grid {
 	}
 	
 	private ArrayList<Node> getNeighbours(Node node) {
+		return null;
 		// each node has at most 8 neighbours
 		// Lab3 may be useful here as well
 	}
@@ -112,7 +113,7 @@ public class Grid {
 
 	public void findPath(Node startNode, Node targetNode)
 			throws HeapFullException, HeapEmptyException {
-		Heap<Node> openSet = new Heap<>(width * height); // this where we make use of our heaps
+		Heap<Node> openSet = new Heap<Node>(width * height); // this where we make use of our heaps
 		// The rest of your implementation goes here.
 		// This method implements A-star path search algorithm.
 		// The pseudocode is provided in the appropriate web links.
@@ -136,6 +137,7 @@ public class Grid {
 	}
 	
 	public Node getTreasure(int range) {
+		return boat;
 		// range is the range of the sonar
 		// if the distance of the treasure from the boat is less or equal that the sonar range,
 		// return the treasure node. Otherwise return null.
