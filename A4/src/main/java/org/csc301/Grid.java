@@ -200,9 +200,68 @@ public class Grid {
 		// The pseudocode is provided in the appropriate web links.
 		// Make sure to use the helper method getNeighbours
 		
+		//initialize the open list
+		//initialize the closed list
+		//put the starting node on the open list (you can leave its f at zero)
 		startNode.hCost = getDistance(startNode, targetNode);
 		startNode.gCost = 0;
 		openSet.add(startNode);
+		ArrayList<Node> closedList = new ArrayList<Node>();
+		
+		while(!openSet.isEmpty()){
+			//find the node with the least f on the open list, call it "q"
+			//pop q off the open list
+			//generate q's 8 successors and set their parents to q
+			Node q = openSet.removeFirst();
+			ArrayList<Node> neighbours = getNeighbours(q);
+			for(Node qNeighbour : neighbours){
+				//if successor is the goal, stop the search
+				if(qNeighbour.walkable){
+					if(qNeighbour == targetNode){
+						qNeighbour.parent = q;
+						return;
+					}
+					//successor.g = q.g + distance between successor and q
+					int g = q.gCost + getDistance(qNeighbour, q);
+					
+					//checkclose set
+					//  if a node with the same position as successor is in the CLOSED list 
+		            //which has a lower f than successor, skip this successor
+					if(closedList.contains(qNeighbour)){
+						if(g < qNeighbour.gCost){
+							closedList.remove(qNeighbour);
+							qNeighbour.gCost = g;
+							//successor.h = distance from goal to successor
+							qNeighbour.hCost = getDistance(qNeighbour, targetNode);
+							qNeighbour.parent = q;
+							openSet.add(qNeighbour);
+						}
+					}
+					
+					// check OpenSet
+					//if a node with the same position as successor is in the OPEN list \
+		            //which has a lower f than successor, skip this successor
+					if (openSet.contains(qNeighbour)){
+						if (g < qNeighbour.gCost){
+							qNeighbour.gCost = g;
+							qNeighbour.parent = q;
+							openSet.updateItem(qNeighbour);
+							}
+						}
+					//otherwise, add the node to the open list
+					if(!openSet.contains(qNeighbour)){
+						qNeighbour.parent = q;
+						qNeighbour.gCost = getDistance(q,qNeighbour) + q.gCost;
+						qNeighbour.hCost = getDistance(qNeighbour, targetNode);
+						openSet.add(qNeighbour);
+					}
+				}
+				//end
+			    //push q on the closed list
+				closedList.add(q);
+			}
+			//end
+		}
 	}
 
 	public ArrayList<Node> retracePath(Node startNode, Node endNode) {
