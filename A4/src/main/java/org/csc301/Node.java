@@ -26,8 +26,7 @@ public class Node implements HeapItem {
 
 	//@Override
 	public int compareTo(HeapItem other) {
-		return gCost;
-		// Your implementation goes here. Similar to Lab4.
+		return this.getFCost() - ((Node) other).getFCost();
 	}
 
 	//@Override
@@ -42,7 +41,7 @@ public class Node implements HeapItem {
 
 	@Override
 	public boolean equals(Object other) {
-		return inPath;
+		return this.gridX == ((Node)other).gridX && this.gridY == ((Node)other).gridY;
 		// Your implementation goes here. Two nodes are equal if they occupy same position in the map.
 	}
 }
