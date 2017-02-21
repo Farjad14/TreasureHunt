@@ -43,31 +43,31 @@ public class Grid {
 		//create the map and place the boat
 		map = new Node[height][width];
 		Random rand = new Random();
-		int boatX = rand.nextInt(width);
-		int boatY = rand.nextInt(height);
-		boat = new Node(true, boatX, boatY);
+		int boatX = rand.nextInt(height);
+		int boatY = rand.nextInt(width);
+		boat = new Node(true, boatY, boatX);
 		map[boatX][boatY] = boat;
 		
-		int treasX = rand.nextInt(width);
-		int treasY = rand.nextInt(height);
+		int treasX = rand.nextInt(height);
+		int treasY = rand.nextInt(width);
 		
 		//find a spot to place the treasure
 		while (map[treasX][treasY] != null){
-			treasX = rand.nextInt(width);
-			treasY = rand.nextInt(height);
+			treasX = rand.nextInt(height);
+			treasY = rand.nextInt(width);
 		}
-		treasure = new Node(true, treasX, treasY);
+		treasure = new Node(true, treasY, treasX);
 		map[treasX][treasY] = treasure;
 		
 		//Fill the grid with island or navigable
-		for(int i=0; i<width;i++){
-			for(int j=0; j<height;j++){
-				if (map[i][j] != null){
+		for(int i=0; i<height;i++){
+			for(int j=0; j<width;j++){
+				if (map[i][j] == null){
 					if(rand.nextInt(99)<percent){
-						map[i][j] = new Node(false, i, j);
+						map[i][j] = new Node(false, j, i);
 					}
 					else{
-						map[i][j] = new Node(true, i, j);
+						map[i][j] = new Node(true, j, i);
 					}
 				}
 			}
@@ -133,11 +133,6 @@ public class Grid {
 		// each node has at most 8 neighbours
 		// Lab3 may be useful here as well
 		ArrayList<Node> neighbours = new ArrayList<Node>();
-		boolean n,s,e,w;
-		n = (node.gridY - 1) >=0;
-		s = (node.gridY + 1) < height;
-		e = (node.gridX + 1) < width;
-		w = (node.gridX - 1) >= 0;
 		
 		//north
 		if((node.gridY - 1) >=0){
@@ -150,8 +145,8 @@ public class Grid {
 		}
 		
 		//north east
-		if(((node.gridY + 1) < height) && ((node.gridX + 1) < width)){
-			neighbours.add(map[node.gridY-1][node.gridX-1]);
+		if(((node.gridY - 1) >= 0) && ((node.gridX + 1) < width)){
+			neighbours.add(map[node.gridY-1][node.gridX+1]);
 		}
 		
 		//south east
@@ -166,7 +161,7 @@ public class Grid {
 		
 		//south west
 		if(((node.gridY + 1) < height) && ((node.gridX - 1) >= 0)){
-			neighbours.add(map[node.gridY][node.gridX]);
+			neighbours.add(map[node.gridY+1][node.gridX-1]);
 		}
 		
 		//east
@@ -176,7 +171,7 @@ public class Grid {
 		
 		//west
 		if((node.gridX - 1) >= 0){
-			neighbours.add(map[node.gridY][node.gridX+1]);
+			neighbours.add(map[node.gridY][node.gridX-1]);
 		}
 		
 		
@@ -223,38 +218,25 @@ public class Grid {
 					}
 					//successor.g = q.g + distance between successor and q
 					int g = q.gCost + getDistance(qNeighbour, q);
+					int h = q.hCost + getDistance(targetNode, qNeighbour);
+					int f = g + h;
 					
-					//checkclose set
-					//  if a node with the same position as successor is in the CLOSED list 
-		            //which has a lower f than successor, skip this successor
+				//	if a node with the same position as successor is in the OPEN list \
+		    //        which has a lower f than successor, skip this successor
+					if(openSet.contains(qNeighbour)){
+						if(qNeighbour.getFCost() < f)
+							continue;
+					}
+		  //      if a node with the same position as successor is in the CLOSED list \ 
+		 //           which has a lower f than successor, skip this successor
 					if(closedList.contains(qNeighbour)){
-						if(g < qNeighbour.gCost){
-							closedList.remove(qNeighbour);
-							qNeighbour.gCost = g;
-							//successor.h = distance from goal to successor
-							qNeighbour.hCost = getDistance(qNeighbour, targetNode);
-							qNeighbour.parent = q;
-							openSet.add(qNeighbour);
-						}
+						if(qNeighbour.getFCost() < f)
+							continue;
 					}
-					
-					// check OpenSet
-					//if a node with the same position as successor is in the OPEN list \
-		            //which has a lower f than successor, skip this successor
-					if (openSet.contains(qNeighbour)){
-						if (g < qNeighbour.gCost){
-							qNeighbour.gCost = g;
-							qNeighbour.parent = q;
-							openSet.updateItem(qNeighbour);
-							}
-						}
-					//otherwise, add the node to the open list
-					if(!openSet.contains(qNeighbour)){
-						qNeighbour.parent = q;
-						qNeighbour.gCost = getDistance(q,qNeighbour) + q.gCost;
-						qNeighbour.hCost = getDistance(qNeighbour, targetNode);
-						openSet.add(qNeighbour);
-					}
+		  ///      otherwise, add the node to the open list
+					qNeighbour.gCost = g;
+					qNeighbour.hCost = h;
+					openSet.add(qNeighbour);
 				}
 				//end
 			    //push q on the closed list
@@ -262,6 +244,7 @@ public class Grid {
 			}
 			//end
 		}
+		
 	}
 
 	public ArrayList<Node> retracePath(Node startNode, Node endNode) {
@@ -278,13 +261,93 @@ public class Grid {
 	public void move(String direction) {
 		// Direction may be: N,S,W,E,NE,NW,SE,SW
 		// move the boat 1 cell in the required direction
+		
+		//north
+				if((boat.gridY - 1) >=0 && direction.equals("N")){
+					Node chk = map[boat.gridX-1][boat.gridY];
+					if(chk.walkable){
+						map[boat.gridX-1][boat.gridY] = boat;
+						boat.gridY--;
+					}
+				}
+				
+				//north west
+				if(((boat.gridY - 1) >=0) && ((boat.gridX - 1) >= 0) && direction.equals("NW")){
+					Node chk = map[boat.gridX-1][boat.gridY-1];
+					if(chk.walkable){
+						map[boat.gridX-1][boat.gridY-1] = boat;
+						boat.gridX--;
+						boat.gridY--;
+					}
+				}
+				
+				//north east
+				if(((boat.gridY + 1) < height) && ((boat.gridX + 1) < width) && direction.equals("NE")){
+					Node chk = map[boat.gridX-1][boat.gridY+1];
+					if(chk.walkable){
+						map[boat.gridX-1][boat.gridY+1] = boat;
+						boat.gridX++;
+						boat.gridY--;
+					}
+				}
+				
+				//south east
+				if(((boat.gridX + 1) < width) && ((boat.gridY + 1) < height) && direction.equals("SE")){
+					Node chk = map[boat.gridX+1][boat.gridY+1];
+					if(chk.walkable){
+						map[boat.gridX+1][boat.gridY+1] = boat;
+						boat.gridX++;
+						boat.gridY++;
+					}
+				}
+				
+				//south
+				if(((boat.gridY + 1) < height) && (direction.equals("S"))){
+					Node chk = map[boat.gridX+1][boat.gridY];
+					if(chk.walkable){
+						map[boat.gridX+1][boat.gridY] = boat;
+						boat.gridY++;
+					}
+				}
+				
+				//south west
+				if(((boat.gridY + 1) < height) && ((boat.gridX - 1) >= 0) && direction.equals("SW")){
+					Node chk = map[boat.gridX+1][boat.gridY-1];
+					if(chk.walkable){
+						map[boat.gridX+1][boat.gridY-1] = boat;
+						boat.gridX--;
+						boat.gridY++;
+					}
+				}
+				
+				//east
+				if((boat.gridX + 1) < width && direction.equals("E")){
+					Node chk = map[boat.gridX][boat.gridY+1];
+					if(chk.walkable){
+						map[boat.gridX][boat.gridY+1] = boat;
+						boat.gridX++;
+					}
+				}
+				
+				//west
+				if((boat.gridX - 1) >= 0 && direction.equals("W")){
+					Node chk = map[boat.gridX][boat.gridY-1];
+					if(chk.walkable){
+						map[boat.gridX][boat.gridY-1] = boat;
+						boat.gridX--;
+					}
+				}
+		
+		
+		
 	}
 	
 	public Node getTreasure(int range) {
-		return boat;
 		// range is the range of the sonar
 		// if the distance of the treasure from the boat is less or equal that the sonar range,
 		// return the treasure node. Otherwise return null.
+		if(getDistance(boat, treasure)<= range) return treasure;
+		return null;
 	}
 
 }
