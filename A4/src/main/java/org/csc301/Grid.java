@@ -199,6 +199,10 @@ public class Grid {
 		// This method implements A-star path search algorithm.
 		// The pseudocode is provided in the appropriate web links.
 		// Make sure to use the helper method getNeighbours
+		
+		startNode.hCost = getDistance(startNode, targetNode);
+		startNode.gCost = 0;
+		openSet.add(startNode);
 	}
 
 	public ArrayList<Node> retracePath(Node startNode, Node endNode) {
