@@ -259,28 +259,28 @@ public class Grid {
 		
 		//north
 				if((boat.gridY - 1) >=0 && direction.equals("N")){
-					Node chk = map[boat.gridX-1][boat.gridY];
+					Node chk = map[boat.gridY-1][boat.gridX];
 					if(chk.walkable){
-						map[boat.gridX-1][boat.gridY] = boat;
+						map[boat.gridY-1][boat.gridX] = boat;
 						boat.gridY--;
 					}
 				}
 				
 				//north west
 				if(((boat.gridY - 1) >=0) && ((boat.gridX - 1) >= 0) && direction.equals("NW")){
-					Node chk = map[boat.gridX-1][boat.gridY-1];
+					Node chk = map[boat.gridY-1][boat.gridX-1];
 					if(chk.walkable){
-						map[boat.gridX-1][boat.gridY-1] = boat;
+						map[boat.gridY-1][boat.gridX-1] = boat;
 						boat.gridX--;
 						boat.gridY--;
 					}
 				}
 				
 				//north east
-				if(((boat.gridY + 1) < height) && ((boat.gridX + 1) < width) && direction.equals("NE")){
-					Node chk = map[boat.gridX-1][boat.gridY+1];
+				if(((boat.gridY - 1) >= 0) && ((boat.gridX + 1) < width) && direction.equals("NE")){
+					Node chk = map[boat.gridY-1][boat.gridX+1];
 					if(chk.walkable){
-						map[boat.gridX-1][boat.gridY+1] = boat;
+						map[boat.gridY-1][boat.gridX+1] = boat;
 						boat.gridX++;
 						boat.gridY--;
 					}
@@ -288,9 +288,9 @@ public class Grid {
 				
 				//south east
 				if(((boat.gridX + 1) < width) && ((boat.gridY + 1) < height) && direction.equals("SE")){
-					Node chk = map[boat.gridX+1][boat.gridY+1];
+					Node chk = map[boat.gridY+1][boat.gridX+1];
 					if(chk.walkable){
-						map[boat.gridX+1][boat.gridY+1] = boat;
+						map[boat.gridY+1][boat.gridX+1] = boat;
 						boat.gridX++;
 						boat.gridY++;
 					}
@@ -298,18 +298,18 @@ public class Grid {
 				
 				//south
 				if(((boat.gridY + 1) < height) && (direction.equals("S"))){
-					Node chk = map[boat.gridX+1][boat.gridY];
+					Node chk = map[boat.gridY+1][boat.gridX];
 					if(chk.walkable){
-						map[boat.gridX+1][boat.gridY] = boat;
+						map[boat.gridY+1][boat.gridX] = boat;
 						boat.gridY++;
 					}
 				}
 				
 				//south west
 				if(((boat.gridY + 1) < height) && ((boat.gridX - 1) >= 0) && direction.equals("SW")){
-					Node chk = map[boat.gridX+1][boat.gridY-1];
+					Node chk = map[boat.gridY+1][boat.gridX-1];
 					if(chk.walkable){
-						map[boat.gridX+1][boat.gridY-1] = boat;
+						map[boat.gridY+1][boat.gridX-1] = boat;
 						boat.gridX--;
 						boat.gridY++;
 					}
@@ -317,18 +317,18 @@ public class Grid {
 				
 				//east
 				if((boat.gridX + 1) < width && direction.equals("E")){
-					Node chk = map[boat.gridX][boat.gridY+1];
+					Node chk = map[boat.gridY][boat.gridX+1];
 					if(chk.walkable){
-						map[boat.gridX][boat.gridY+1] = boat;
+						map[boat.gridY][boat.gridX+1] = boat;
 						boat.gridX++;
 					}
 				}
 				
 				//west
 				if((boat.gridX - 1) >= 0 && direction.equals("W")){
-					Node chk = map[boat.gridX][boat.gridY-1];
+					Node chk = map[boat.gridY][boat.gridX-1];
 					if(chk.walkable){
-						map[boat.gridX][boat.gridY-1] = boat;
+						map[boat.gridY][boat.gridX-1] = boat;
 						boat.gridX--;
 					}
 				}
