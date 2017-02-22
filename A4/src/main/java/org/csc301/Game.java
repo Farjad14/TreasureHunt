@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 public class Game {
+	//This is the Game GUI. Enjoy!
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -79,7 +80,15 @@ public class Game {
 	    nw.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("NW");
+				try {
+					game.processCommand("GO NW");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
@@ -89,7 +98,15 @@ public class Game {
 	    n.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("N");
+				try {
+					game.processCommand("GO N");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
@@ -99,7 +116,15 @@ public class Game {
 	    ne.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("NE");
+				try {
+					game.processCommand("GO NE");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
@@ -109,18 +134,51 @@ public class Game {
 	    w.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("W");
+				try {
+					game.processCommand("GO W");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
 	    });
-		nav.add(new JLabel(new ImageIcon(Game.class.getResource("img/windrose.png")), JLabel.CENTER));
+	    JButton sonar = new JButton("SONAR");
+	    nav.add(sonar);
+	    sonar.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				try {
+					game.processCommand("SONAR");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				frame.setVisible(false);
+				loadGui(game);
+			}
+	    });
 		JButton e = new JButton("E");
 	    nav.add(e);
 	    e.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("E");
+				try {
+					game.processCommand("GO E");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
@@ -130,7 +188,15 @@ public class Game {
 	    sw.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("SW");
+				try {
+					game.processCommand("GO SW");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
@@ -140,7 +206,15 @@ public class Game {
 	    s.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("S");
+				try {
+					game.processCommand("GO S");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}
@@ -150,7 +224,15 @@ public class Game {
 	    se.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				game.islands.move("SE");
+				try {
+					game.processCommand("GO SE");
+				} catch (HeapFullException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (HeapEmptyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setVisible(false);
 				loadGui(game);
 			}

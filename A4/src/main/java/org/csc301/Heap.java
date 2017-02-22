@@ -78,12 +78,12 @@ public class Heap<T extends HeapItem> {
 					T p = items[pindex];
 					if(item.compareTo(p) > 0){
 						swap(item, p);
+						pindex = (item.getHeapIndex() - 1) / 2;
 					}
 					else{
 						break;
 					}
 				}
-				pindex = (item.getHeapIndex() - 1) / 2;
 			}
 			
 		}
@@ -97,7 +97,7 @@ public class Heap<T extends HeapItem> {
 				// The formulas are on the handout.
 		while(true){
 			if(contains(item)){
-				int index = 0;
+				int index = 1;
 				int l = (item.getHeapIndex() *2) + 1;
 				int r = (item.getHeapIndex() *2 ) + 2;
 				

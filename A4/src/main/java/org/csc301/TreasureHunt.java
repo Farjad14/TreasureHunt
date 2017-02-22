@@ -58,6 +58,11 @@ public class TreasureHunt {
 				}
 			}
 		}
+		else{
+			if (command.split(" ")[0].equals("GO")){
+				islands.move(command.split(" ")[1]);
+			}
+		}
 	}
 	else{
 		return;
