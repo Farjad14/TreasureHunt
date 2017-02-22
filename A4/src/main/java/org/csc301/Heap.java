@@ -70,12 +70,72 @@ public class Heap<T extends HeapItem> {
 		// Implement this method according to the diagram on the handout.
 		// Also: the indices of children and parent elements satisfy some relationships.
 		// The formulas are on the handout.
+		if (contains(item)){
+			int pindex = (item.getHeapIndex() - 1) / 2;
+			
+			if(pindex != 0){
+				while(true){
+					T p = items[pindex];
+					if(item.compareTo(p) > 0){
+						swap(item, p);
+					}
+					else{
+						break;
+					}
+				}
+				pindex = (item.getHeapIndex() - 1) / 2;
+			}
+			
+		}
+		
+		
 	}
 	
 	private void sortDown(T item) {
 		// Implement this method according to the diagram on the handout.
 				// Also: the indices of children and parent elements satisfy some relationships.
 				// The formulas are on the handout.
+		while(true){
+			if(contains(item)){
+				int index = 0;
+				int l = (item.getHeapIndex() *2) + 1;
+				int r = (item.getHeapIndex() *2 ) + 2;
+				
+				//Has left child
+				if(l < this.currentItemCount){
+					index = l;
+					//has right child
+					if(r < this.currentItemCount){
+						//use right child, less than left child
+						if(items[l].compareTo(items[r])< 0){
+							index = r;
+						}
+					}
+					if(item.compareTo(items[index])<0){
+						swap(item, items[index]);
+					}
+					else{
+						return;
+					}
+				}
+				else{
+					return;
+				}
+			}
+			else{
+				return;
+			}
+		}
+		
+		
+	}
+	
+	private void swap(T item1, T item2){
+		items[item2.getHeapIndex()] = item1;
+		items[item1.getHeapIndex()] = item2;
+		int index = item2.getHeapIndex();
+		item2.setHeapIndex(item1.getHeapIndex());
+		item2.setHeapIndex(index);
 	}
 	
 	// You may implement additional helper methods if desired. Make sure to make them private!

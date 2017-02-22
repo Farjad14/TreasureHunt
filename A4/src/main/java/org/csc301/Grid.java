@@ -188,64 +188,59 @@ public class Grid {
 	}
 
 	public void findPath(Node startNode, Node targetNode)
-			throws HeapFullException, HeapEmptyException {
-		Heap<Node> openSet = new Heap<Node>(width * height); // this where we make use of our heaps
-		// The rest of your implementation goes here.
-		// This method implements A-star path search algorithm.
-		// The pseudocode is provided in the appropriate web links.
-		// Make sure to use the helper method getNeighbours
-		
-		//initialize the open list
-		//initialize the closed list
-		//put the starting node on the open list (you can leave its f at zero)
-		startNode.hCost = getDistance(startNode, targetNode);
-		startNode.gCost = 0;
-		openSet.add(startNode);
-		ArrayList<Node> closedList = new ArrayList<Node>();
-		
-		while(!openSet.isEmpty()){
-			//find the node with the least f on the open list, call it "q"
-			//pop q off the open list
-			//generate q's 8 successors and set their parents to q
-			Node q = openSet.removeFirst();
-			ArrayList<Node> neighbours = getNeighbours(q);
-			for(Node qNeighbour : neighbours){
-				//if successor is the goal, stop the search
-				if(qNeighbour.walkable){
-					if(qNeighbour == targetNode){
-						qNeighbour.parent = q;
-						return;
-					}
-					//successor.g = q.g + distance between successor and q
-					int g = q.gCost + getDistance(qNeighbour, q);
-					int h = q.hCost + getDistance(targetNode, qNeighbour);
-					int f = g + h;
-					
-				//	if a node with the same position as successor is in the OPEN list \
-		    //        which has a lower f than successor, skip this successor
-					if(openSet.contains(qNeighbour)){
-						if(qNeighbour.getFCost() < f)
-							continue;
-					}
-		  //      if a node with the same position as successor is in the CLOSED list \ 
-		 //           which has a lower f than successor, skip this successor
-					if(closedList.contains(qNeighbour)){
-						if(qNeighbour.getFCost() < f)
-							continue;
-					}
-		  ///      otherwise, add the node to the open list
-					qNeighbour.gCost = g;
-					qNeighbour.hCost = h;
-					openSet.add(qNeighbour);
+            throws HeapFullException, HeapEmptyException {
+        Heap<Node> openSet = new Heap<Node>(width * height); // this where we make use of our heaps
+        // The rest of your implementation goes here.
+        // This method implements A-star path search algorithm.
+        // The pseudocode is provided in the appropriate web links.
+        // Make sure to use the helper method getNeighbours
+        ArrayList<Node> closedList= new ArrayList<Node>();
+        
+        startNode.hCost = getDistance(startNode, targetNode);
+        startNode.gCost = 0;
+        
+        openSet.add(startNode);
+        
+        while(!openSet.isEmpty()){
+          Node q = openSet.removeFirst();
+          //if we hit target, then we found path
+          if(q == targetNode){
+        	  retracePath(null, targetNode);
+            return;
+          }
+          
+          for(Node n : getNeighbours(q)){
+        	  //ensure walkable
+        	  if(!n.walkable){
+        		  continue;
+        	  }
+        	//successor.g = q.g + distance between successor and q
+        	  int g = q.gCost + getDistance(n, q);
+				int h = q.hCost + getDistance(targetNode, n);
+				int f = g + h;
+        	  
+//				if a node with the same position as successor is in the OPEN list \
+			    //        which has a lower f than successor, skip this successor
+				if(openSet.contains(n)){
+					if(f < n.getFCost()){
+		        		  n.gCost = g;
+		        		  n.hCost = h;
+		        		  n.parent = q;
+		        	      openSet.updateItem(n);
+		        	  }
 				}
-				//end
-			    //push q on the closed list
-				closedList.add(q);
-			}
-			//end
-		}
-		
-	}
+				if(closedList.contains(n)){
+					if(f < n.getFCost()){
+		        		  n.gCost = g;
+		        		  n.hCost = h;
+		        		  n.parent = q;
+		        	      openSet.updateItem(n);
+		        	  }
+				}
+          }
+          closedList.add(q);
+        }
+       }
 
 	public ArrayList<Node> retracePath(Node startNode, Node endNode) {
 		Node currentNode = endNode;
